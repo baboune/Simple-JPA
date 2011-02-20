@@ -20,6 +20,8 @@
  */
 package persist;
 
+import org.apache.openjpa.persistence.jdbc.ForeignKey;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -40,6 +42,7 @@ public class SmallEmployee implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMP_ID", nullable = false)
+    @ForeignKey
     private BigCompany company = null;
 
     @Version

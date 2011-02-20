@@ -37,14 +37,11 @@
         <class>persist.BigCompany</class>
         <class>persist.SmallEmployee</class>
         <properties>
-            <property name="openjpa.Log" value="SQL=ERROR"/>
-            <property name="openjpa.jdbc.SynchronizeMappings"
-                      value="buildSchema(SchemaAction='drop,add')"/>
+            <property name="openjpa.Log" value="SQL=TRACE"/>
             <property name="openjpa.jdbc.DBDictionary" value="mysql(DriverVendor=mysql)"/>
             <property name="openjpa.QueryCache" value="CacheSize=2000"/>            
-            <property name="openjpa.IgnoreChanges" value="true"/>
-            <property name="openjpa.FetchBatchSize" value="20"/>
-            <property name="openjpa.FlushBeforeQueries" value="true"/>
+            <!--property name="openjpa.jdbc.SynchronizeMappings"
+                value="buildSchema(ForeignKeys=true)"/-->
         </properties>
     </persistence-unit>
 
