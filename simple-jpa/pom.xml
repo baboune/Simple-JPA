@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>mine</groupId>
+        <artifactId>ko</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>mine</groupId>
+    <artifactId>simple-jpa</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>simple jpa</name>
+
+    <build>
+        <plugins>
+            <!--plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>openjpa-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <includes>**/persist/*.class</includes>
+                    <addDefaultConstructor>true</addDefaultConstructor>
+                    <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>enhancer</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>enhance</goal>
+                            <goal>sql</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+            <!--plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <tasks>
+                                <taskdef name="weave"
+                                         classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask"
+                                         classpathref="maven.test.classpath"/>
+                                <weave loglevel="FINEST"
+                                       source="${basedir}/target/classes"
+                                       target="${basedir}/target/classes"
+                                       persistenceinfo="${basedir}/src/main/resources">
+                                    <classpath refid="maven.test.classpath"/>
+                                </weave>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>test</scope>
+            <version>5.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openjpa</groupId>
+            <artifactId>openjpa-persistence</artifactId>
+            <version>1.2.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.weaving</artifactId>
+            <version>2.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>hibernate</groupId>
+            <artifactId>hibernate3</artifactId>
+            <version>3.2.4.SP1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>hibernate-annotations</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.3.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>hibernate-commons-annotations</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>3.0.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>hibernate-entitymanager</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.3.1.GA</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency-->
+
+
+    </dependencies>
+
+</project>
