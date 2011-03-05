@@ -41,7 +41,9 @@
             <property name="openjpa.jdbc.DBDictionary" value="mysql(DriverVendor=mysql)"/>
             <!--property name="openjpa.QueryCache" value="CacheSize=2000"/-->
             <property name="openjpa.jdbc.MappingDefaults"
-                                value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
+                      value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict"/>
+            <property name="openjpa.QueryCache" value="ehcache"/>
+            <property name="openjpa.DataCacheManager" value="ehcache"/>
             <!--property name="openjpa.jdbc.SynchronizeMappings"
                 value="buildSchema(ForeignKeys=true)"/-->
         </properties>

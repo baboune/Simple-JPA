@@ -12,30 +12,17 @@
  * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
  *
  * User: Baboune
- * Date: 13-Nov-2010
- * Time: 15:36:10
+ * Date: 05/03/11
+ * Time: 17:20
  */
 package loader;
 
-import persist.BigCompany;
-
-import javax.ejb.Local;
-
 /**
  *
- *
  */
-@Local 
-public interface LocalDao {
-    public int updateWithEmployees(int nb, Long cid);
+public class ConstraintException extends Exception {
 
-    public int delete(Long id);
-
-    public Long createCompany(final String name, final int nb) throws ConstraintException;
-
-    <T> T find(Class<T> bigCompanyClass, Long l);
-
-    BigCompany findCompanyByName(String name);
-
-    BigCompany updateCompanyName(Long id, String name) throws ConstraintException;
+    public ConstraintException(String message) {
+        super(message);
+    }
 }

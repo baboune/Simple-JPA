@@ -20,6 +20,8 @@
  */
 package persist;
 
+import org.apache.openjpa.persistence.DataCache;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
@@ -32,7 +34,19 @@ import java.io.Serializable;
  * @since 14-May-2009
  */
 @Entity
-@Table(name = "BIGCOMPANY")
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "BigCompany.findByName",
+                        query = "SELECT c FROM BigCompany c WHERE c.name = :name"
+
+                )
+
+        }
+)
+@Table(name = "BIGCOMPANY",
+        uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
+@DataCache(timeout = 10000)
 public class BigCompany {
 
     @Id

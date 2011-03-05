@@ -20,6 +20,7 @@
  */
 package persist;
 
+import org.apache.openjpa.persistence.DataCache;
 import org.apache.openjpa.persistence.jdbc.ForeignKey;
 
 import javax.persistence.*;
@@ -33,6 +34,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="SMALLEMPLOYEE")
+@DataCache(timeout = 10000)
 public class SmallEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

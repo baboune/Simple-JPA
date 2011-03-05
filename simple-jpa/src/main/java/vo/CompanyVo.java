@@ -12,30 +12,23 @@
  * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
  *
  * User: Baboune
- * Date: 13-Nov-2010
- * Time: 15:36:10
+ * Date: 05/03/11
+ * Time: 14:27
  */
-package loader;
+package vo;
 
-import persist.BigCompany;
-
-import javax.ejb.Local;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
- *
  */
-@Local 
-public interface LocalDao {
-    public int updateWithEmployees(int nb, Long cid);
+public class CompanyVo {
+    public Long id = null;
+    public String name = null;
 
-    public int delete(Long id);
+    public Set<EmployeeVo> employees = new HashSet<EmployeeVo>();
 
-    public Long createCompany(final String name, final int nb) throws ConstraintException;
-
-    <T> T find(Class<T> bigCompanyClass, Long l);
-
-    BigCompany findCompanyByName(String name);
-
-    BigCompany updateCompanyName(Long id, String name) throws ConstraintException;
+    public CompanyVo() {
+    }
 }

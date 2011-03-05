@@ -23,7 +23,7 @@ import javax.ejb.Local;
 public interface LocalMyLoader {
     float createACompanyWithEmployee(final String name,
                                      final int nbCie,
-                                     final int employees);
+                                     final int employees) throws ConstraintException;
 
 
     public float deleteCompany(final int nb);

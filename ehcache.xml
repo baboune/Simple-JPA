@@ -1,0 +1,47 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+
+    <defaultCache
+            maxElementsInMemory="1000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600"
+            overflowToDisk="false"
+            memoryStoreEvictionPolicy="LRU"
+            />
+
+    <!-- OpenJPA data cache -->
+    <cache name="openjpa"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU"
+            />
+    <!--
+    <cache name="openjpa"
+           maxElementsInMemory="10000"
+           maxElementsOnDisk="0"
+           eternal="false"
+           overflowToDisk="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU" />
+           transactionalMode="on"/>
+-->
+
+    <!-- OpenJPA query cache -->
+    <cache name="openjpa-querycache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+</ehcache>

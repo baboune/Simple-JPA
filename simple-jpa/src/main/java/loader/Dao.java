@@ -25,6 +25,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -32,14 +33,17 @@ import javax.persistence.Query;
  *
  */
 @Stateless
-@Interceptors( TimeInterceptor.class )
+@Interceptors(TimeInterceptor.class)
 public class Dao implements LocalDao {
 
     @PersistenceContext(unitName = "BM")
     private EntityManager em = null;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Long createCompany(final String name, final int nb) {
+    public Long createCompany(final String name, final int nb) throws ConstraintException {
+         if(!isUnique(name)) {
+            throw new ConstraintException("Name already in use");
+        }
         BigCompany bc = new BigCompany();
         bc.setName(name);
         SmallEmployee se = null;
@@ -82,5 +86,32 @@ public class Dao implements LocalDao {
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public <T> T find(Class<T> clazz, Long l) {
         return em.find(clazz, l);
+    }
+
+    @Override
+    public BigCompany findCompanyByName(String name) {
+        try {
+            return (BigCompany) em.createNamedQuery("BigCompany.findByName").setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public BigCompany updateCompanyName(Long id, String name) throws ConstraintException {
+        if(!isUnique(name)) {
+            throw new ConstraintException("Name already in use");
+        }
+        BigCompany bc =  em.find(BigCompany.class, id);
+        bc.setName(name);
+        return bc;
+    }
+
+
+    private boolean isUnique(final String name) {
+        Query q = em.createQuery("SELECT COUNT(c.id) FROM BigCompany c WHERE c.name = :name");
+        q.setParameter("name", name);
+        Number nb = (Number)q.getSingleResult();
+        return (nb.intValue() == 0);
     }
 }

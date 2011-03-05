@@ -22,6 +22,8 @@ package loader;
 
 import persist.BigCompany;
 import persist.SmallEmployee;
+import vo.CompanyVo;
+import vo.Converter;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -61,7 +63,7 @@ public class MyLoader implements LocalMyLoader {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public float createACompanyWithEmployee(final String name,
                                             final int nbCie,
-                                            final int employees) {
+                                            final int employees) throws ConstraintException {
         Long[] ids = new Long[nbCie];
         long time[] = new long[nbCie];
         for (int i = 0; i < nbCie; i++) {
@@ -126,7 +128,7 @@ public class MyLoader implements LocalMyLoader {
 
         long[] time = new long[nb];
         int i = 0;
-        for(long cid: cids) {
+        for (long cid : cids) {
             time[i] = System.nanoTime();
             dao.updateWithEmployees(nbEmployees, cid);
             time[i] = System.nanoTime() - time[i];
@@ -140,7 +142,7 @@ public class MyLoader implements LocalMyLoader {
     }
 
 
-     @WebMethod()
+    @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public float getFullCompany(final int nb) {
         String query = "SELECT ID FROM BIGCOMPANY ORDER BY RAND() LIMIT 1";
@@ -205,5 +207,25 @@ public class MyLoader implements LocalMyLoader {
         System.out.println("get small employees took: " + ((float) (end - time)) / (max) + " ns");
         return (end - time) / 1000000f / (float) max;
 
+    }
+
+    @WebMethod()
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public CompanyVo getCompany(@WebParam(name = "id") final Long id) {
+        BigCompany bc = dao.find(BigCompany.class, id);
+        return Converter.toCompanyVo(bc);
+    }
+
+    @WebMethod()
+    public CompanyVo getCompanyByName(@WebParam(name = "name") final String name) {
+        BigCompany bc = dao.findCompanyByName(name);
+        return Converter.toCompanyVo(bc);
+    }
+
+    @WebMethod()
+    public CompanyVo updateCompanyName(@WebParam(name = "id") final Long id,
+                                       @WebParam(name = "name") final String name) throws ConstraintException {
+        BigCompany bc = dao.updateCompanyName(id, name);
+        return Converter.toCompanyVo(bc);
     }
 }
