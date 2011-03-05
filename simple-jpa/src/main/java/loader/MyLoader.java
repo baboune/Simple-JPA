@@ -47,6 +47,7 @@ import java.util.logging.Logger;
  * @since 3-May-2009
  */
 @Stateless
+@WebService
 public class MyLoader implements LocalMyLoader {
     static final Logger LOG = Logger.getLogger("MyLoader");
 
@@ -56,6 +57,7 @@ public class MyLoader implements LocalMyLoader {
     @EJB
     LocalDao dao = null;
 
+    @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public float createACompanyWithEmployee(final String name,
                                             final int nbCie,
@@ -138,6 +140,7 @@ public class MyLoader implements LocalMyLoader {
     }
 
 
+     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public float getFullCompany(final int nb) {
         String query = "SELECT ID FROM BIGCOMPANY ORDER BY RAND() LIMIT 1";

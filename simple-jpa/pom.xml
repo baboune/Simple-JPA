@@ -20,24 +20,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>openjpa-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <configuration>
                     <includes>**/persist/*.class</includes>
                     <addDefaultConstructor>true</addDefaultConstructor>
                     <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
-                    <!--sqlAction>build,ForeignKeys=true</sqlAction-->
-                    <!--sqlAction>build,OpenJPATables='true',ForeignKeys='true'</sqlAction-->
                     <sqlFile>./mytables.sql</sqlFile>
-                    <!--connectionDriverName>com.mysql.jdbc.Driver</connectionDriverName>
-                    <connectionProperties>
-                        driverClass=com.mysql.jdbc.Driver,
-                        jdbcUrl=jdbc:mysql://127.0.0.1:3306/adb,
-                        user=root,
-                        password=system,
-                        minPoolSize=5,
-                        acquireRetryAttempts=3,
-                        maxPoolSize=20
-                    </connectionProperties-->
                 </configuration>
                 <executions>
                     <execution>
@@ -50,30 +38,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <tasks>
-                                <taskdef name="weave"
-                                         classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask"
-                                         classpathref="maven.test.classpath"/>
-                                <weave loglevel="FINEST"
-                                       source="${basedir}/target/classes"
-                                       target="${basedir}/target/classes"
-                                       persistenceinfo="${basedir}/src/main/resources">
-                                    <classpath refid="maven.test.classpath"/>
-                                </weave>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
         </plugins>
     </build>
     <dependencies>
@@ -94,18 +58,6 @@
             <artifactId>openjpa-persistence-jdbc</artifactId>
             <version>1.2.2</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.weaving</artifactId>
-            <version>2.1.1</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>hibernate</groupId>
@@ -131,14 +83,6 @@
             <version>3.3.1.GA</version>
             <scope>provided</scope>
         </dependency>
-
-        <!--dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.0.Final</version>
-        </dependency-->
-
-
     </dependencies>
 
 </project>

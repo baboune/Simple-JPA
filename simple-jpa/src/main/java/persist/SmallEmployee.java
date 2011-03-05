@@ -33,7 +33,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="SMALLEMPLOYEE")
-public class SmallEmployee implements Serializable {
+public class SmallEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -42,7 +42,7 @@ public class SmallEmployee implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMP_ID", nullable = false)
-    @ForeignKey
+    //@ForeignKey
     private BigCompany company = null;
 
     @Version

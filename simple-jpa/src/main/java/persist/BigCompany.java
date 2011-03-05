@@ -33,12 +33,10 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "BIGCOMPANY")
-public class BigCompany implements Serializable {
+public class BigCompany {
 
     @Id
-    // no good for innodb
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id = null;
     private String name = null;
 
