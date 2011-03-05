@@ -46,7 +46,7 @@ import java.io.Serializable;
 )
 @Table(name = "BIGCOMPANY",
         uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
-@DataCache(timeout = 10000)
+@DataCache(timeout = 100000)
 public class BigCompany {
 
     @Id

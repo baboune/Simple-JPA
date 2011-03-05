@@ -34,7 +34,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="SMALLEMPLOYEE")
-@DataCache(timeout = 10000)
+@DataCache(timeout = 100000)
 public class SmallEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

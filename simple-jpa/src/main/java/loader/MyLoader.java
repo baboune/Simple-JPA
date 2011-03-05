@@ -212,12 +212,14 @@ public class MyLoader implements LocalMyLoader {
     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public CompanyVo getCompany(@WebParam(name = "id") final Long id) {
+        LOG.info("get company :" + id);
         BigCompany bc = dao.find(BigCompany.class, id);
         return Converter.toCompanyVo(bc);
     }
 
     @WebMethod()
     public CompanyVo getCompanyByName(@WebParam(name = "name") final String name) {
+        LOG.info("get company :" + name);
         BigCompany bc = dao.findCompanyByName(name);
         return Converter.toCompanyVo(bc);
     }
@@ -225,6 +227,7 @@ public class MyLoader implements LocalMyLoader {
     @WebMethod()
     public CompanyVo updateCompanyName(@WebParam(name = "id") final Long id,
                                        @WebParam(name = "name") final String name) throws ConstraintException {
+        LOG.info("update company :" + id);
         BigCompany bc = dao.updateCompanyName(id, name);
         return Converter.toCompanyVo(bc);
     }
