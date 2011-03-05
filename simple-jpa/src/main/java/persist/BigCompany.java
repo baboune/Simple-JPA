@@ -21,7 +21,6 @@
 package persist;
 
 import org.apache.openjpa.persistence.DataCache;
-
 import javax.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
@@ -46,15 +45,18 @@ import java.io.Serializable;
 )
 @Table(name = "BIGCOMPANY",
         uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
-@DataCache(timeout = 100000)
-public class BigCompany {
+//@Cache( usage = CacheConcurrencyStrategy.READ_WRITE)
+@DataCache(timeout = 10000)
+public class BigCompany implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = null;
     private String name = null;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
+    //@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<SmallEmployee> employees = new HashSet<SmallEmployee>();
 
     @Version

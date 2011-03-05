@@ -21,7 +21,6 @@
 package persist;
 
 import org.apache.openjpa.persistence.DataCache;
-import org.apache.openjpa.persistence.jdbc.ForeignKey;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,8 +33,11 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="SMALLEMPLOYEE")
-@DataCache(timeout = 100000)
-public class SmallEmployee {
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@DataCache(timeout = 10000)
+public class SmallEmployee implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)

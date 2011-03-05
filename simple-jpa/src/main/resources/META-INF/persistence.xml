@@ -8,8 +8,11 @@
         <class>persist.SmallEmployee</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.cache.region.factory_class"
+                      value="net.sf.ehcache.hibernate.EhCacheRegionFactory"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
         </properties>
     </persistence-unit-->
 
@@ -39,13 +42,10 @@
         <properties>
             <property name="openjpa.Log" value="SQL=TRACE"/>
             <property name="openjpa.jdbc.DBDictionary" value="mysql(DriverVendor=mysql)"/>
-            <!--property name="openjpa.QueryCache" value="CacheSize=2000"/-->
             <property name="openjpa.jdbc.MappingDefaults"
                       value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict"/>
             <property name="openjpa.QueryCache" value="ehcache"/>
             <property name="openjpa.DataCacheManager" value="ehcache"/>
-            <!--property name="openjpa.jdbc.SynchronizeMappings"
-                value="buildSchema(ForeignKeys=true)"/-->
         </properties>
     </persistence-unit>
 
