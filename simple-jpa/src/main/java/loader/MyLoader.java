@@ -20,16 +20,15 @@
  */
 package loader;
 
-import persist.BigCompany;
-import persist.SmallEmployee;
-import vo.CompanyVo;
-import vo.Converter;
+import data.ConstraintException;
+import data.LocalDao;
+import data.persist.BigCompany;
+import loader.vo.CompanyVo;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.interceptor.Interceptors;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -61,9 +60,11 @@ public class MyLoader implements LocalMyLoader {
 
     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float createACompanyWithEmployee(final String name,
-                                            final int nbCie,
-                                            final int employees) throws ConstraintException {
+    public float createACompanyWithEmployee(@WebParam(name = "name")final String name,
+                                            @WebParam(name = "nbOfCies") final int nbCie,
+                                            @WebParam(name = "nbOfEmployeess")final int employees)
+            throws ConstraintException
+    {
         Long[] ids = new Long[nbCie];
         long time[] = new long[nbCie];
         for (int i = 0; i < nbCie; i++) {
@@ -85,60 +86,6 @@ public class MyLoader implements LocalMyLoader {
             sum += l;
         }
         return sum / 1000000f / (float) nbCie;
-    }
-
-
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float deleteCompany(final int nb) {
-        Query q = em.createQuery("SELECT bc.id FROM BigCompany bc");
-        q.setMaxResults(nb);
-        List<Long> ids = q.getResultList();
-
-        long time[] = new long[nb];
-        int i = 0;
-        for (Long id : ids) {
-            time[i] = System.nanoTime();
-            if (LOG.isLoggable(Level.FINEST)) {
-                LOG.finest("deleteCompany start: " + time[i]);
-            }
-            dao.delete(id);
-            time[i] = System.nanoTime() - time[i];
-            if (LOG.isLoggable(Level.FINEST)) {
-                LOG.finest("deleteCompany end: " + time[i]);
-            }
-            i++;
-        }
-        long sum = 0;
-        for (long l : time) {
-            sum += l;
-        }
-        return sum / 1000000f / (float) nb;
-    }
-
-
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float addEmployees(final int nb,
-                              final int nbEmployees) {
-        String query = "SELECT ID FROM BIGCOMPANY ORDER BY RAND() LIMIT 1";
-        List<Long> cids = new ArrayList<Long>(nb);
-        for (int i = 0; i < nb; i++) {
-            Query q = em.createNativeQuery(query);
-            cids.add((Long) q.getSingleResult());
-        }
-
-        long[] time = new long[nb];
-        int i = 0;
-        for (long cid : cids) {
-            time[i] = System.nanoTime();
-            dao.updateWithEmployees(nbEmployees, cid);
-            time[i] = System.nanoTime() - time[i];
-            i++;
-        }
-        long sum = 0;
-        for (long l : time) {
-            sum += l;
-        }
-        return sum / 1000000f / nb;
     }
 
 
@@ -180,48 +127,19 @@ public class MyLoader implements LocalMyLoader {
         return sum / 1000000f / (float) count;
     }
 
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float getSmallEmployees(final int start,
-                                   final int max) {
-        String query = "SELECT ID FROM SMALLEMPLOYEE ORDER BY RAND() LIMIT 1";
-        List<Long> ids = new ArrayList<Long>(max);
-        for (int i = 0; i < max; i++) {
-            Query q = em.createNativeQuery(query);
-            ids.add((Long) q.getSingleResult());
-        }
-
-        long time = System.nanoTime();
-        if (LOG.isLoggable(Level.FINEST)) {
-            LOG.finest("getSmallEmployees start: " + time);
-        }
-        for (Number id : ids) {
-            SmallEmployee se = dao.find(SmallEmployee.class, id.longValue());
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine("se: " + se);
-            }
-        }
-        long end = System.nanoTime();
-        if (LOG.isLoggable(Level.FINEST)) {
-            LOG.finest("getSmallEmployees end: " + end);
-        }
-        System.out.println("get small employees took: " + ((float) (end - time)) / (max) + " ns");
-        return (end - time) / 1000000f / (float) max;
-
-    }
-
     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public CompanyVo getCompany(@WebParam(name = "id") final Long id) {
         LOG.info("get company :" + id);
         BigCompany bc = dao.find(BigCompany.class, id);
-        return Converter.toCompanyVo(bc);
+        return CompanyVo.toCompanyVo(bc);
     }
 
     @WebMethod()
     public CompanyVo getCompanyByName(@WebParam(name = "name") final String name) {
         LOG.info("get company :" + name);
         BigCompany bc = dao.findCompanyByName(name);
-        return Converter.toCompanyVo(bc);
+        return CompanyVo.toCompanyVo(bc);
     }
 
     @WebMethod()
@@ -229,6 +147,6 @@ public class MyLoader implements LocalMyLoader {
                                        @WebParam(name = "name") final String name) throws ConstraintException {
         LOG.info("update company :" + id);
         BigCompany bc = dao.updateCompanyName(id, name);
-        return Converter.toCompanyVo(bc);
+        return CompanyVo.toCompanyVo(bc);
     }
 }

@@ -18,22 +18,20 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>openjpa-maven-plugin</artifactId>
-                <version>1.2</version>
+                <groupId>org.datanucleus</groupId>
+                <artifactId>maven-datanucleus-plugin</artifactId>
+                <version>3.1.2</version>
                 <configuration>
-                    <includes>**/persist/*.class</includes>
-                    <addDefaultConstructor>true</addDefaultConstructor>
-                    <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
-                    <sqlFile>./mytables.sql</sqlFile>
+                    <log4jConfiguration>${basedir}/log4j.properties</log4jConfiguration>
+                    <verbose>false</verbose>
+                    <api>JPA</api>
+                    <persistenceUnitName>BM</persistenceUnitName>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>enhancer</id>
-                        <phase>process-classes</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>enhance</goal>
-                            <goal>sql</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -48,41 +46,41 @@
             <version>5.1.6</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa-persistence</artifactId>
-            <version>1.2.2</version>
-            <scope>provided</scope>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-core</artifactId>
+            <version>3.1.3</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa-persistence-jdbc</artifactId>
-            <version>1.2.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--dependency>
-            <groupId>hibernate</groupId>
-            <artifactId>hibernate3</artifactId>
-            <version>3.2.4.SP1</version>
-            <scope>provided</scope>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-jpa</artifactId>
+            <version>3.1.3</version>
         </dependency>
         <dependency>
-            <groupId>hibernate-annotations</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>3.3.0.GA</version>
-            <scope>provided</scope>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jpa_2.0_spec</artifactId>
+            <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>hibernate-commons-annotations</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>3.0.0.GA</version>
-            <scope>provided</scope>
+            <groupId>javax.jdo</groupId>
+            <artifactId>jdo-api</artifactId>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
-            <groupId>hibernate-entitymanager</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.3.1.GA</version>
-            <scope>provided</scope>
-        </dependency-->
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>[1.2, 1.3)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-rdbms</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-jdo</artifactId>
+            <version>3.1.3</version>
+        </dependency>
     </dependencies>
 
 </project>

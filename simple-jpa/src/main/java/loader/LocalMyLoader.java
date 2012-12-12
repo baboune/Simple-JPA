@@ -1,5 +1,7 @@
 package loader;
 
+import data.ConstraintException;
+
 import javax.ejb.Local;
 
 /**
@@ -25,15 +27,6 @@ public interface LocalMyLoader {
                                      final int nbCie,
                                      final int employees) throws ConstraintException;
 
-
-    public float deleteCompany(final int nb);
-
-
-    public float addEmployees(final int nb, final int nbEmployees);
-
-
     public float getFullCompany(final int nb);
 
-
-    public float getSmallEmployees(final int start, final int max);
 }
