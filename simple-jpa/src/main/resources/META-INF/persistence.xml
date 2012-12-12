@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
 
-        <persistence-unit name="BM" transaction-type="JTA">
-            <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+    <persistence-unit name="BM" transaction-type="JTA">
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 
-            <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-            <properties>
-                <!-- Magic JBoss property for specifying the persistence provider -->
-                <property name="jboss.as.jpa.providerModule" value="org.datanucleus"/>
-                <!-- following is probably not useful... but...-->
-                <property name="datanucleus.jtaLocator" value="custom_jndi"/>
-                <property name="datanucleus.jtaJndiLocation" value="java:/TransactionManager"/>
-            </properties>
-        </persistence-unit>
+        <class>data.persist.BigCompany</class>
+        <class>data.persist.SmallEmployee</class>
+
+        <properties>
+            <!-- Magic JBoss property for specifying the persistence provider -->
+            <property name="jboss.as.jpa.providerModule" value="org.datanucleus"/>
+            <!-- following is probably not useful... but...-->
+            <property name="datanucleus.jtaLocator" value="custom_jndi"/>
+            <property name="datanucleus.jtaJndiLocation" value="java:/TransactionManager"/>
+            <!-- J2EE Close warning -->
+            <property name="datanucleus.jpa.ignoreEntityManagerCloseByJ2EEContainer" value="true"/>
+            <property name="datanucleus.autoCreateSchema" value="true"/>
+        </properties>
+    </persistence-unit>
 
 </persistence>

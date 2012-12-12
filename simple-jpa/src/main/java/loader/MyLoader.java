@@ -91,7 +91,7 @@ public class MyLoader implements LocalMyLoader {
 
     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float getFullCompany(final int nb) {
+    public float getFullCompany(@WebParam(name = "nb")final int nb) {
         String query = "SELECT ID FROM BIGCOMPANY ORDER BY RAND() LIMIT 1";
         List<Long> cids = new ArrayList<Long>(nb);
         for (int i = 0; i < nb; i++) {
