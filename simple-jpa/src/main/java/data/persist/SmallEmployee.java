@@ -42,7 +42,6 @@ public class SmallEmployee implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMP_ID", nullable = false)
-    //@ForeignKey
     private BigCompany company = null;
 
     @Version
