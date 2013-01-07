@@ -53,7 +53,6 @@ public class BigCompany implements Serializable {
     private String name = null;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
-    //@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<SmallEmployee> employees = new HashSet<SmallEmployee>();
 
     @Version
