@@ -21,8 +21,8 @@
 package loader;
 
 import data.ConstraintException;
-import data.LocalDao;
-import data.persist.BigCompany;
+import data.LocalSBDao;
+import data.persist.Company;
 import loader.vo.CompanyVo;
 
 import javax.ejb.EJB;
@@ -56,15 +56,14 @@ public class MyLoader implements LocalMyLoader {
     private EntityManager em = null;
 
     @EJB
-    LocalDao dao = null;
+    LocalSBDao dao = null;
 
     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float createACompanyWithEmployee(@WebParam(name = "name")final String name,
+    public float createACompanyWithEmployee(@WebParam(name = "name") final String name,
                                             @WebParam(name = "nbOfCies") final int nbCie,
-                                            @WebParam(name = "nbOfEmployeess")final int employees)
-            throws ConstraintException
-    {
+                                            @WebParam(name = "nbOfEmployeess") final int employees)
+            throws ConstraintException {
         Long[] ids = new Long[nbCie];
         long time[] = new long[nbCie];
         for (int i = 0; i < nbCie; i++) {
@@ -91,7 +90,7 @@ public class MyLoader implements LocalMyLoader {
 
     @WebMethod()
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public float getFullCompany(@WebParam(name = "nb")final int nb) {
+    public float getFullCompany(@WebParam(name = "nb") final int nb) {
         String query = "SELECT ID FROM BIGCOMPANY ORDER BY RAND() LIMIT 1";
         List<Long> cids = new ArrayList<Long>(nb);
         for (int i = 0; i < nb; i++) {
@@ -107,7 +106,7 @@ public class MyLoader implements LocalMyLoader {
             if (LOG.isLoggable(Level.FINEST)) {
                 LOG.finest("getFullCompany start: " + time[count]);
             }
-            BigCompany bc = dao.find(BigCompany.class, l);
+            Company bc = dao.find(Company.class, l);
             time[count] = System.nanoTime() - time[count];
             if (LOG.isLoggable(Level.FINEST)) {
                 LOG.finest("getFullCompany end: " + time[count]);
@@ -131,14 +130,14 @@ public class MyLoader implements LocalMyLoader {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public CompanyVo getCompany(@WebParam(name = "id") final Long id) {
         LOG.info("get company :" + id);
-        BigCompany bc = dao.find(BigCompany.class, id);
+        Company bc = dao.find(Company.class, id);
         return CompanyVo.toCompanyVo(bc);
     }
 
     @WebMethod()
     public CompanyVo getCompanyByName(@WebParam(name = "name") final String name) {
         LOG.info("get company :" + name);
-        BigCompany bc = dao.findCompanyByName(name);
+        Company bc = dao.findCompanyByName(name);
         return CompanyVo.toCompanyVo(bc);
     }
 
@@ -146,7 +145,25 @@ public class MyLoader implements LocalMyLoader {
     public CompanyVo updateCompanyName(@WebParam(name = "id") final Long id,
                                        @WebParam(name = "name") final String name) throws ConstraintException {
         LOG.info("update company :" + id);
-        BigCompany bc = dao.updateCompanyName(id, name);
+        Company bc = dao.updateCompanyName(id, name);
         return CompanyVo.toCompanyVo(bc);
+    }
+
+    @WebMethod()
+    public boolean deleteCompany(@WebParam(name = "id") final Long id) {
+        LOG.info("delete company :" + id);
+        return dao.delete(id) != 0;
+    }
+
+    @WebMethod()
+    public boolean changeAndRollback(@WebParam(name = "companyId") final Long id) {
+        LOG.info("update and rollback company :" + id);
+        try{
+            dao.updateCompanyName(id, "a name that can not be persisted cause it will be rolled back");
+        } catch (ConstraintException e) {
+            return false;
+        }
+        // Force rollback with an exception.
+        throw new IllegalArgumentException("Trigger rollback with runtime exception.");
     }
 }

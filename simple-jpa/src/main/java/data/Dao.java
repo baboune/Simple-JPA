@@ -17,9 +17,9 @@
  */
 package data;
 
+import data.persist.Company;
+import data.persist.Employee;
 import loader.TimeInterceptor;
-import data.persist.BigCompany;
-import data.persist.SmallEmployee;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -31,11 +31,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * A relatively simple Data Access Object exposed as Stateless Bean.
  *
+ * Used to CRUD the entities: {@link Employee}, {@link Company}.
  */
 @Stateless
 @Interceptors(TimeInterceptor.class)
-public class Dao implements LocalDao {
+public class Dao implements LocalSBDao {
 
     @PersistenceContext(unitName = "BM")
     private EntityManager em = null;
@@ -46,12 +48,12 @@ public class Dao implements LocalDao {
          if(!isUnique(name)) {
             throw new ConstraintException("Name already in use");
         }
-        BigCompany bc = new BigCompany();
+        Company bc = new Company();
         bc.setName(name);
-        SmallEmployee se = null;
+        Employee se = null;
         String time = String.valueOf(System.currentTimeMillis());
         for (int i = 0; i < nb; i++) {
-            se = new SmallEmployee();
+            se = new Employee();
             se.setName(time + "::" + i);
             se.setCompany(bc);
             bc.getEmployees().add(se);
@@ -60,23 +62,34 @@ public class Dao implements LocalDao {
         return bc.getId();
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public int delete(Long id) {
-        Query q = em.createQuery("DELETE FROM SmallEmployee se WHERE se.company.id = :id");
+        Company bc = em.find(Company.class, id);
+        if(bc == null) {
+            return 0;
+        }
+        int count = 0;
+        for (Employee se:bc.getEmployees()) {
+            em.remove(se);
+            count++;
+        }
+        em.remove(bc);
+        return ++count;
+        /*Query q = em.createQuery("DELETE FROM Employee se WHERE se.companyId = :id");
         q.setParameter("id", id);
         q.executeUpdate();
-        q = em.createQuery("DELETE FROM BigCompany c WHERE c.id = :id");
+        q = em.createQuery("DELETE FROM Company c WHERE c.id = :id");
         q.setParameter("id", id);
         return q.executeUpdate();
+        */
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public int updateWithEmployees(int nb, Long cid) {
-        SmallEmployee se = null;
+        Employee se = null;
         String time = String.valueOf(System.currentTimeMillis());
-        BigCompany persisted = em.find(BigCompany.class, cid);
+        Company persisted = em.find(Company.class, cid);
         for (int i = 0; i < nb; i++) {
-            se = new SmallEmployee();
+            se = new Employee();
             se.setName(time + "::" + i);
             se.setCompany(persisted);
             persisted.getEmployees().add(se);
@@ -91,27 +104,27 @@ public class Dao implements LocalDao {
     }
 
     @Override
-    public BigCompany findCompanyByName(String name) {
+    public Company findCompanyByName(String name) {
         try {
-            return (BigCompany) em.createNamedQuery("BigCompany.findByName").setParameter("name", name).getSingleResult();
+            return (Company) em.createNamedQuery("BigCompany.findByName").setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
-    public BigCompany updateCompanyName(Long id, String name) throws ConstraintException {
+    public Company updateCompanyName(Long id, String name) throws ConstraintException {
         if(!isUnique(name)) {
             throw new ConstraintException("Name already in use");
         }
-        BigCompany bc =  em.find(BigCompany.class, id);
+        Company bc =  em.find(Company.class, id);
         bc.setName(name);
         return bc;
     }
 
 
     private boolean isUnique(final String name) {
-        Query q = em.createQuery("SELECT COUNT(c.id) FROM BigCompany c WHERE c.name = :name");
+        Query q = em.createQuery("SELECT COUNT(c.id) FROM Company c WHERE c.name = :name");
         q.setParameter("name", name);
         Number nb = (Number)q.getSingleResult();
         return (nb.intValue() == 0);

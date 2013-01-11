@@ -3,10 +3,16 @@
 
     <persistence-unit name="BM" transaction-type="JTA">
         <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        <!-- H2 data source -->
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <non-jta-data-source>java:jboss/datasources/ExampleDS-NonJTA</non-jta-data-source>
+        <!-- MySQL DS
+        <jta-data-source>java:/jdbc/simple</jta-data-source>
+        <non-jta-data-source>java:/jdbc/simple-nonjta</non-jta-data-source>
+        -->
 
-        <class>data.persist.BigCompany</class>
-        <class>data.persist.SmallEmployee</class>
+        <class>data.persist.Company</class>
+        <class>data.persist.Employee</class>
 
         <properties>
             <!-- Magic JBoss property for specifying the persistence provider -->

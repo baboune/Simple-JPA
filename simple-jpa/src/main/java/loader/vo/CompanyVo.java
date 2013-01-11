@@ -17,8 +17,8 @@
  */
 package loader.vo;
 
-import data.persist.BigCompany;
-import data.persist.SmallEmployee;
+import data.persist.Company;
+import data.persist.Employee;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +36,7 @@ public class CompanyVo {
     }
 
 
-    public static CompanyVo toCompanyVo(BigCompany bc) {
+    public static CompanyVo toCompanyVo(Company bc) {
             if( bc == null){
                 return null;
             }
@@ -45,7 +45,7 @@ public class CompanyVo {
             vo.name = bc.getName();
 
             if(bc.getEmployees() != null) {
-                for(SmallEmployee se : bc.getEmployees()){
+                for(Employee se : bc.getEmployees()){
                     EmployeeVo evo = new EmployeeVo();
                     evo.id = se.getId();
                     evo.name = se.getName();

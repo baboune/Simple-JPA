@@ -35,7 +35,7 @@ and OpenJPA) using MySQL and data source located with "jdbc/bm":
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/bm</jta-data-source> <!-- This data source jndi must be defined in the JavaEE AS -->
         <class>data.persist.BigCompany</class>
-        <class>data.persist.SmallEmployee</class>
+        <class>data.persist.Employee</class>
         <properties>
             <property name="eclipselink.ddl-generation" value="create-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
@@ -51,7 +51,7 @@ and OpenJPA) using MySQL and data source located with "jdbc/bm":
         <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
         <jta-data-source>jdbc/bm</jta-data-source> <!-- This data source jndi must be defined in the JavaEE AS -->
         <class>data.persist.BigCompany</class>
-        <class>data.persist.SmallEmployee</class>
+        <class>data.persist.Employee</class>
         <properties>
             <property name="openjpa.Log" value="SQL=TRACE"/>
             <property name="openjpa.jdbc.DBDictionary" value="mysql(DriverVendor=mysql)"/>

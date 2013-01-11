@@ -17,7 +17,7 @@
  */
 package data;
 
-import data.persist.BigCompany;
+import data.persist.Company;
 
 import javax.ejb.Local;
 
@@ -26,7 +26,7 @@ import javax.ejb.Local;
  *
  */
 @Local 
-public interface LocalDao {
+public interface LocalSBDao {
     public int updateWithEmployees(int nb, Long cid);
 
     public int delete(Long id);
@@ -35,7 +35,7 @@ public interface LocalDao {
 
     <T> T find(Class<T> bigCompanyClass, Long l);
 
-    BigCompany findCompanyByName(String name);
+    Company findCompanyByName(String name);
 
-    BigCompany updateCompanyName(Long id, String name) throws ConstraintException;
+    Company updateCompanyName(Long id, String name) throws ConstraintException;
 }

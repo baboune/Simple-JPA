@@ -15,36 +15,27 @@
  * <p/>
  * User: Baboune
  * Date: 14-May-2009
- * Time: 11:47:22 PM
+ * Time: 11:49:07 PM
  *
  */
 package data.persist;
 
+
 import javax.persistence.*;
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 
 /**
- * TODO Add comments (class description)
+ * A JPA entity representing an employee of a {@link Company}
+ *
+ * In this example, since a bi-directional One-To-Many relationship is used (a company has many to one employees), the
+ * entity is thus composed of one field ("name") and the inverse part of the relationship.
  *
  * @author Baboune
  * @since 14-May-2009
  */
 @Entity
-@NamedQueries(
-        {
-                @NamedQuery(
-                        name = "BigCompany.findByName",
-                        query = "SELECT c FROM BigCompany c WHERE c.name = :name"
-
-                )
-
-        }
-)
-@Table(name = "BIGCOMPANY",
-        uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
-public class BigCompany implements Serializable {
+@Table(name="SMALLEMPLOYEE")
+public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,16 +43,28 @@ public class BigCompany implements Serializable {
     private Long id = null;
     private String name = null;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
-    private Set<SmallEmployee> employees = new HashSet<SmallEmployee>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COMPANY_ID")
+    private Company company = null;
 
+    /*@Column(name = "COMPANY_ID", insertable = false, updatable = false)
+    private Long companyId;
+    */
     @Version
     private int version;
 
-
-    public BigCompany() {
-
+    public Employee() {
+        
     }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
 
     public Long getId() {
         return id;
@@ -79,20 +82,28 @@ public class BigCompany implements Serializable {
         this.name = name;
     }
 
-    public Set<SmallEmployee> getEmployees() {
-        return employees;
-    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    public void setEmployees(Set<SmallEmployee> employees) {
-        this.employees = employees;
+        Employee employee = (Employee) o;
+
+        return !(name != null ? !name.equals(employee.name) : employee.name != null);
+
     }
 
     @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
+
+    @Override
     public String toString() {
-        return "BigCompany{" +
+        return "Employee{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", employees=" + employees +
                 '}';
     }
 }

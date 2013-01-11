@@ -15,24 +15,42 @@
  * <p/>
  * User: Baboune
  * Date: 14-May-2009
- * Time: 11:49:07 PM
+ * Time: 11:47:22 PM
  *
  */
 package data.persist;
 
-
 import javax.persistence.*;
+import java.util.Set;
+import java.util.HashSet;
 import java.io.Serializable;
 
 /**
- * TODO Add comments (class description)
+ * A JPA entity representing a Company.
+ *
+ * It is composed of a name, and a list of employees {@link Employee}.  The One To Many employee(s) relationship
+ * is represented in this example as a bi-directional mapping (as indicated by the "mappedBy" attribute of
+ * the "@OneToMany" annotation.
+ *
+ * @see Employee
  *
  * @author Baboune
  * @since 14-May-2009
  */
 @Entity
-@Table(name="SMALLEMPLOYEE")
-public class SmallEmployee implements Serializable {
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "BigCompany.findByName",
+                        query = "SELECT c FROM Company c WHERE c.name = :name"
+
+                )
+
+        }
+)
+@Table(name = "BIGCOMPANY",
+        uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
+public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,25 +58,14 @@ public class SmallEmployee implements Serializable {
     private Long id = null;
     private String name = null;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COMP_ID", nullable = false)
-    private BigCompany company = null;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
+    private Set<Employee> employees = new HashSet<Employee>();
 
     @Version
     private int version;
 
-    public SmallEmployee() {
-        
+    public Company() {
     }
-
-    public BigCompany getCompany() {
-        return company;
-    }
-
-    public void setCompany(BigCompany company) {
-        this.company = company;
-    }
-
 
     public Long getId() {
         return id;
@@ -76,28 +83,21 @@ public class SmallEmployee implements Serializable {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SmallEmployee employee = (SmallEmployee) o;
-
-        return !(name != null ? !name.equals(employee.name) : employee.name != null);
-
+    public Set<Employee> getEmployees() {
+        return employees;
     }
 
-    @Override
-    public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
-
 
     @Override
     public String toString() {
-        return "SmallEmployee{" +
+        return "Company{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", employees=" + employees +
+                ", version=" + version +
                 '}';
     }
 }
