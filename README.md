@@ -21,11 +21,10 @@ The non JTA datasource is:
 
     java:jboss/datasources/ExampleDS-NonJTA  
 
-To add this datasource:
+To add this datasource and enable it:
 
-$JBOSS_HOME/bin/jboss-cli.sh -c command="/subsystem=datasources/data-source=ExampleNONJTADS:add(jndi-name=\"java:jboss/datasources/ExampleNONJTADS\", use-java-context=true, driver-name=h2, connection-url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1, user-name=sa, password=sa, jta=false)"
-
-$JBOSS_HOME/bin/jboss-cli.sh -c command="/subsystem=datasources/data-source=ExampleNONJTADS:enable"
+    $JBOSS_HOME/bin/jboss-cli.sh -c command="/subsystem=datasources/data-source=ExampleNONJTADS:add(jndi-name=\"java:jboss/datasources/ExampleNONJTADS\", use-java-context=true, driver-name=h2, connection-url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1, user-name=sa, password=sa, jta=false)"
+    $JBOSS_HOME/bin/jboss-cli.sh -c command="/subsystem=datasources/data-source=ExampleNONJTADS:enable"
 
 $JBOSS_HOME must point to the location where JBOSS is installed.
 
