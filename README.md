@@ -8,15 +8,31 @@ A simple Java Persistence API (JPA 1.x and 2.x) maven project to prototype thing
 This will generate a jar in the target directory "simple-JPA-0.1-SNAPSHOT.jar" which can be deployed in
 any JavaEE application server.
 
-By default, the simple jar will attempt to create two tables BIGCOMPANY, and SMALLEMPLOYEE at deployment time.
-The persistence.xml file points to a JBOSS definition using datanucleus as a provider, and the datasource looked up is:
+By default, the simple jar will attempt to create two tables COMPANY, and EMPLOYEE at deployment time.
+The persistence.xml file points to a JBOSS definition using datanucleus as a provider, and the JTA datasource looked up is:
 
     java:jboss/datasources/ExampleDS  
 
 (Which is the default JBoss datasource using H2).
 
+A second datasource is specified in the persistence.xml as a non JTA datasource, this removes warnings in DataNucleus when the database schema is created. In the specification/theory, any change to a schema should be made outside the scope of JTA, most persistence providers (OpenJPA/Hibernate) do not check for this. 
+
+The non JTA datasource is:
+
+    java:jboss/datasources/ExampleDS-NonJTA  
+
+To add this datasource:
+
+$JBOSS_HOME/bin/jboss-cli.sh -c command="/subsystem=datasources/data-source=ExampleNONJTADS:add(jndi-name=\"java:jboss/datasources/ExampleNONJTADS\", use-java-context=true, driver-name=h2, connection-url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1, user-name=sa, password=sa, jta=false)"
+
+$JBOSS_HOME/bin/jboss-cli.sh -c command="/subsystem=datasources/data-source=ExampleNONJTADS:enable"
+
+$JBOSS_HOME must point to the location where JBOSS is installed.
+
+--------------
+
 Here are some other possible persistence.xml using the same project and a different JPA provider (Hibernate, EclipseLink 
-and OpenJPA) using MySQL and data source located with "jdbc/bm":
+and OpenJPA) using MySQL and a data source located with a jndi lookup of "jdbc/bm":
 
     <persistence-unit name="BM" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
