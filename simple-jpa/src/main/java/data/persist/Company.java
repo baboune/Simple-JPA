@@ -48,7 +48,7 @@ import java.io.Serializable;
 
         }
 )
-@Table(name = "BIGCOMPANY",
+@Table(name = "COMPANY",
         uniqueConstraints=@UniqueConstraint(columnNames="NAME"))
 public class Company implements Serializable {
 

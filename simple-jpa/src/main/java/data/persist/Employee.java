@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @since 14-May-2009
  */
 @Entity
-@Table(name="SMALLEMPLOYEE")
+@Table(name="EMPLOYEE")
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
