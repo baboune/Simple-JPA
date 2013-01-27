@@ -3,9 +3,10 @@
 
     <persistence-unit name="BM" transaction-type="JTA">
         <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
-        <!-- H2 data source -->
+        <!-- H2 data source  -->
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
         <non-jta-data-source>java:jboss/datasources/ExampleDS-NonJTA</non-jta-data-source>
+
         <!-- MySQL DS
         <jta-data-source>java:/jdbc/simple</jta-data-source>
         <non-jta-data-source>java:/jdbc/simple-nonjta</non-jta-data-source>
@@ -20,8 +21,8 @@
             <!-- following is probably not useful... but...-->
             <property name="datanucleus.jtaLocator" value="custom_jndi"/>
             <property name="datanucleus.jtaJndiLocation" value="java:/TransactionManager"/>
-            <!-- J2EE Close warning -->
-            <property name="datanucleus.jpa.ignoreEntityManagerCloseByJ2EEContainer" value="true"/>
+            <!-- J2EE Close warning (not necessary for versions aove 3.2.0-m2 -->
+            <!--property name="datanucleus.jpa.ignoreEntityManagerCloseByJ2EEContainer" value="true"/-->
             
             <property name="datanucleus.autoCreateSchema" value="true"/>
             <property name="datanucleus.metadata.validate" value="false"/>
