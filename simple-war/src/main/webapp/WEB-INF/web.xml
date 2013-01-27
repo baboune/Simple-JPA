@@ -9,7 +9,7 @@
         <servlet-name>DataNucleus</servlet-name>
         <servlet-class>org.datanucleus.api.rest.RestServlet</servlet-class>
         <init-param>
-            <param-name>persistence-unit</param-name>
+            <param-name>persistence-context</param-name>
             <param-value>BM</param-value>
         </init-param>
     </servlet>
