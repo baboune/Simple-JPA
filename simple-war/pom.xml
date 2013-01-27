@@ -1,19 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
         <groupId>mine</groupId>
         <artifactId>simple</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-  
-  
-  <groupId>mine</groupId>
-  <artifactId>simple-war</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>simple jpa</name>
-  
-  
-  
+
+
+    <groupId>mine</groupId>
+    <artifactId>simple-war</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>simple jpa war</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-rest</artifactId>
+            <version>3.2.0-m1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>
